@@ -1,0 +1,8 @@
+arm-none-eabi-gcc
+-DSTM32
+-DSTM32F4
+-DSTM32F42
+-Ilib/device/include
+-Ilib/device/include/m4
+-Ilib/hal/include
+-Wall

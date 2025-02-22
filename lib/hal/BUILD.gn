@@ -1,0 +1,77 @@
+static_library("adc") {
+  sources = [ "src/hal_adc.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("ct_lcd") {
+  sources = [ "src/hal_ct_lcd.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("ct_seg7") {
+  sources = [ "src/hal_ct_seg7.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("dac") {
+  sources = [ "src/hal_dac.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("dma") {
+  sources = [ "src/hal_dma.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("fmc") {
+  sources = [ "src/hal_fmc.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+
+static_library("gpio") {
+  sources = [ "src/hal_gpio.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("pwr") {
+  sources = [ "src/hal_pwr.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("rcc") {
+  sources = [ "src/hal_rcc.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("spi") {
+  sources = [ "src/hal_spi.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("systick") {
+  sources = [ "src/hal_systick.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+static_library("timer") {
+  sources = [ "src/hal_timer.c" ]
+  deps = [ "//lib/device:regs" ]
+}
+
+group("hal") {
+  deps = [ 
+    ":adc",
+    ":ct_lcd",
+    ":ct_seg7",
+    ":dac",
+    ":dma",
+    ":fmc",
+    ":gpio",
+    ":pwr",
+    ":rcc",
+    ":spi",
+    ":systick",
+    ":timer",
+  ]
+}

@@ -1,0 +1,25 @@
+static_library("startup") {
+  sources = [
+    "src/startup_ctboard.s",
+    "src/datainit_ctboard.s",
+
+    "src/system_ctboard.c",
+  ]
+  deps = [
+    "//lib/hal:gpio"
+  ]
+}
+
+static_library("regs") {
+  sources = [
+    "src/reg_stm32f4xx.c",
+    "src/reg_ctboard.c",
+  ]
+}
+
+group("device") {
+  deps = [
+    ":startup",
+    ":regs",
+  ]
+}

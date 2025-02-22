@@ -1,0 +1,7 @@
+src/**/build/
+out/
+RTE/
+
+
+*.uvguix.*
+*.zip

@@ -1,0 +1,12 @@
+executable("lab01") {
+  sources = [
+    "app/main.c",
+    "app/lcd.c",
+    "app/dice_counter.c",
+    "app/statistics.c",
+  ]
+  deps = [
+    "//lib/device",
+    "//lib/hal",
+  ]
+}

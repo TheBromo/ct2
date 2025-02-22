@@ -1,0 +1,54 @@
+set_default_toolchain("//build/toolchain:arm-none-eabi-gcc")
+
+declare_args() {
+  is_debug = true
+}
+
+include_dirs = [
+  "//lib/device/include",
+  "//lib/device/include/m4",
+  "//lib/hal/include",
+]
+
+defines = [
+  "STM32",
+  "STM32F4",
+  "STM32F4XX",
+]
+
+asmflags = [
+  "-mcpu=cortex-m4",
+  "-mthumb",
+  "-mlittle-endian",
+]
+
+cflags = [
+  "-mcpu=cortex-m4",
+  "-mthumb",
+  "-mlittle-endian",
+]
+
+ldflags = [
+  "-mcpu=cortex-m4",
+  "-mthumb",
+  "-mlittle-endian",
+
+  "-nostartfiles",
+  "-specs=nosys.specs",
+  "-T../build/linker.ld",
+]
+
+if (is_debug) {
+  debug_flags = [
+    "-g",
+    "-ggdb",
+    "-O0",
+  ]
+
+  cflags += debug_flags
+  ldflags += debug_flags
+} else {
+  ldflags += [
+    "-O3",
+  ]
+}

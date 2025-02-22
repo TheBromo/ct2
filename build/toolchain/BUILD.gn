@@ -1,0 +1,83 @@
+toolchain("arm-none-eabi-gcc") {
+  tool("asm") {
+    depfile = "{{output}}.d"
+    depsformat = "gcc"
+
+    description = "AS {{output}}"
+    command = "arm-none-eabi-gcc -MMD -MF $depfile {{defines}} {{include_dirs}} {{asmflags}} -c {{source}} -o {{output}}"
+
+    outputs = [
+      "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o",
+    ]
+  }
+
+  tool("cc") {
+    depfile = "{{output}}.d"
+    depsformat = "gcc"
+
+    description = "CC {{output}}"
+    command = "arm-none-eabi-gcc -MMD -MF $depfile {{defines}} {{include_dirs}} {{cflags}} -c {{source}} -o {{output}}"
+
+    outputs = [
+      "{{source_out_dir}}/{{target_output_name}}.{{source_name_part}}.o",
+    ]
+  }
+
+  tool("alink") {
+    rspfile = "{{output}}.rsp"
+    rspfile_content = "{{inputs}}"
+
+    description = "AR {{target_output_name}}{{output_extension}}"
+    command = "rm -f {{output}} && arm-none-eabi-ar rcs {{output}} @$rspfile"
+    
+    output_prefix = "lib"
+    default_output_extension = ".a"
+
+    outputs = [
+      "{{target_out_dir}}/{{target_output_name}}{{output_extension}}",
+    ]
+  }
+
+  tool("solink") {
+    soname = "{{target_output_name}}{{output_extension}}"
+    
+    rspfile = soname + ".rsp"
+    rspfile_content = "-Wl,--whole-archive {{inputs}} {{solibs}} -Wl,--no-whole-archive {{libs}}"
+
+    description = "SOLINK $soname"
+    command = "arm-none-eabi-gcc -shared {{ldflags}} -o $soname -Wl,-soname=$soname @$rspfile"
+    
+    link_output = soname
+    depend_output = soname
+    output_prefix = "lib"
+    default_output_extension = ".so"
+
+    outputs = [
+      soname,
+    ]
+  }
+
+  tool("link") {
+    outfile = "{{target_output_name}}{{output_extension}}"
+
+    rspfile = "$outfile.rsp"
+    rspfile_content = "{{inputs}}"
+
+    description = "LINK $outfile"
+    command = "arm-none-eabi-gcc {{ldflags}} -o $outfile @$rspfile {{solibs}} {{libs}}"
+
+    outputs = [
+      outfile,
+    ]
+  }
+  
+  tool("stamp") {
+    description = "STAMP {{output}}"
+    command = "touch {{output}}"
+  }
+
+  tool("copy") {
+    description = "COPY {{source}} {{output}}"
+    command = "cp -af {{source}} {{output}}"
+  }
+}
