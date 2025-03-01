@@ -1,0 +1,9 @@
+executable("lab02") {
+  sources = [
+    "app/main.c",
+  ]
+  deps = [
+    "//lib/device",
+    "//lib/hal",
+  ]
+}
