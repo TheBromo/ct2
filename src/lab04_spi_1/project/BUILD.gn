@@ -1,0 +1,11 @@
+executable("lab04") {
+  sources = [
+    "app/test.c",
+    "app/hal_spi.c",
+    "app/hal_spi.h",
+  ]
+  deps = [
+    "//lib/device",
+    "//lib/hal",
+  ]
+}
