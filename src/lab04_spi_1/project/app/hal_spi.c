@@ -65,9 +65,10 @@ void hal_spi_init(void) {
   /*SPI1->CR1 &= 0xBFFF; // set BIDIOE to 0*/
   /*SPI1->CR1 &= 0xCFFF; // set CRCN + CRCEN to 0*/
   /*SPI1->CR1 |= 0x0300; // set ssm + ssi to 1*/
-                       //
+  //
   /*SPI1->CR1 |= 0x0040; // set spe to 1 and make it scharf*/
-    SPI1->CR1 = 0xB7C;
+  SPI1->CR1 = 0xB7C;
+  SPI1->CR1 |= 1 << 6; // SPE
 
   /// END: To be programmed
 
@@ -82,14 +83,16 @@ uint8_t hal_spi_read_write(uint8_t send_byte) {
   uint8_t receive_byte = 0x0;
 
   set_ss_pin_low();
-  wait_10_us();
   SPI1->DR = send_byte;
-  while ((SPI1->SR & BIT_TXE) == BIT_TXE); //wait for txe flag
 
-  while ((SPI1->SR & BIT_RXNE) == BIT_RXNE); //wait for rxne flag
-
+  while ((SPI1->SR & BIT_TXE) == 0)
+    ; // wait for txe flag
+  while ((SPI1->SR & BIT_RXNE) == 0)
+    ; // wait for rxne flag
   receive_byte = SPI1->DR;
-  while ((SPI1->SR & BIT_BSY) == BIT_BSY); //wait for bsy flag
+
+  while (((SPI1->SR & BIT_TXE) == 0) && ((SPI1->SR & BIT_BSY) != 0))
+    ; // wait for bsy flag
 
   wait_10_us();
   set_ss_pin_high();
