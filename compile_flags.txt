@@ -6,3 +6,4 @@ arm-none-eabi-gcc
 -Ilib/device/include/m4
 -Ilib/hal/include
 -Wall
+

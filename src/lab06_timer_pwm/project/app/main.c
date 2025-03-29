@@ -20,6 +20,7 @@
  * -- $Id: main.c 5605 2023-01-05 15:52:42Z frtt $
  * ------------------------------------------------------------------------- */
 
+
 /* standard includes */
 #include <stdint.h>
 #include <reg_stm32f4xx.h>
@@ -56,6 +57,7 @@ static uint16_t cycle_counter_4bit = 0;
 int main(void)
 {
     /// STUDENTS: To be programmed
+    
 
 
 

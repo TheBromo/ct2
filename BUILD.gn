@@ -2,9 +2,8 @@ group("labs") {
   deps = [
     "//src/lab01_dice/project:lab01",
     "//src/lab02_bus_cycles/project:lab02",
-#    "//src/lab03_gpio/project:lab03",
     "//src/lab04_spi_1/project:lab04",
-  #  "//src/lab05-spi-2/project:lab05",
+    "//src/lab05_spi_2/project:lab05",
   #  "//src/lab06-timer-pwm/project:lab06",
   #  "//src/lab07-adc/project:lab07",
   ]

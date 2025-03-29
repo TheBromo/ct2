@@ -84,6 +84,7 @@ void tim3_init(void)
 
     /* add specific configuration for timer3 */
     /// STUDENTS: To be programmed
+    TIM4->PSC = 9999;
 
 
 
@@ -107,6 +108,8 @@ void tim4_init(void)
 
     /* add specific configuration for timer4 */
     /// STUDENTS: To be programmed
+    
+
 
 
 
