@@ -4,7 +4,7 @@ group("labs") {
     "//src/lab02_bus_cycles/project:lab02",
     "//src/lab04_spi_1/project:lab04",
     "//src/lab05_spi_2/project:lab05",
-  #  "//src/lab06-timer-pwm/project:lab06",
+     "//src/lab06_timer_pwm/project:lab06",
   #  "//src/lab07-adc/project:lab07",
   ]
 }

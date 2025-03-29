@@ -20,30 +20,27 @@
  * -- $Id: main.c 5605 2023-01-05 15:52:42Z frtt $
  * ------------------------------------------------------------------------- */
 
-
 /* standard includes */
-#include <stdint.h>
-#include <reg_stm32f4xx.h>
 #include <reg_ctboard.h>
+#include <reg_stm32f4xx.h>
+#include <stdint.h>
 
 /* user includes */
 #include "timer.h"
-
 
 /* -- Macros used as by student code
  * ------------------------------------------------------------------------- */
 
 /// STUDENTS: To be programmed
+#define SCALE_FACTOR 4000 // scale 60'000 / 15 = 4000
 
-
-
+uint16_t calcDutyCycle(uint8_t input) { return input * SCALE_FACTOR; }
 
 /// END: To be programmed
 
 /* -- Function prototypes
  * ------------------------------------------------------------------------- */
- void TIM4_IRQHandler(void);
- 
+void TIM4_IRQHandler(void);
 
 /* -- global variables visible only within this module
  * ------------------------------------------------------------------------- */
@@ -54,27 +51,41 @@ static uint16_t cycle_counter_4bit = 0;
 /* -- M A I N
  * ------------------------------------------------------------------------- */
 
-int main(void)
-{
-    /// STUDENTS: To be programmed
-    
+int main(void) {
+  /// STUDENTS: To be programmed
+  tim4_init();
+  tim3_init();
 
+  while (1) {
+    // read first 4 switches
+    uint8_t redInput = CT_DIPSW->BYTE.S7_0 & 0xF;
+    uint8_t greenInput = CT_DIPSW->BYTE.S15_8 & 0xF;
+    uint8_t blueInput = CT_DIPSW->BYTE.S23_16 & 0xF;
+    if (CT_DIPSW->BYTE.S31_24 & 0x80) {
+      tim3_set_compare_register(PWM_CH1,
+                                calcDutyCycle(cycle_counter_4bit * redInput));
+      tim3_set_compare_register(
+          PWM_CH2, calcDutyCycle((0xF - cycle_counter_4bit) * greenInput));
+      tim3_set_compare_register(PWM_CH3, calcDutyCycle(blueInput));
+    } else {
 
+      tim3_set_compare_register(PWM_CH1, calcDutyCycle(redInput));
+      tim3_set_compare_register(PWM_CH2, calcDutyCycle(greenInput));
+      tim3_set_compare_register(PWM_CH3, calcDutyCycle(blueInput));
+    }
+  }
 
-
-    /// END: To be programmed
+  /// END: To be programmed
 }
-
 
 /* -- Interrupt service routine
  * ------------------------------------------------------------------------- */
 
-void TIM4_IRQHandler(void)
-{
-    /// STUDENTS: To be programmed
+void TIM4_IRQHandler(void) {
+  /// STUDENTS: To be programmed
+  tim4_reset_uif();
 
-
-
-
-    /// END: To be programmed
+  CT_LED->BYTE.LED31_24 = ~CT_LED->BYTE.LED31_24;
+  cycle_counter_4bit++;
+  /// END: To be programmed
 }
